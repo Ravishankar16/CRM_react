@@ -7,6 +7,7 @@ function Admin(){
     const Username = localStorage.getItem("name")
 
     const [ticketDetails, setTicketDetails] = useState([])
+    const [ticketStatusCount, setTicketStatusCount] = useState({})
 
     useEffect(()=> {
         fetchTickets()
@@ -17,10 +18,38 @@ function Admin(){
         .then(res=>{
             // console.log(res.data)
             setTicketDetails(res.data)
+            updateTicketCount(res.data)
         })
         .catch(err=>{
             console.log(err)
         })
+
+    }
+
+    const updateTicketCount = (tickets) => {
+
+        const data = {
+            pending:0,
+            progress:0,
+            closed:0,
+            blocled:0
+        }
+
+        tickets.forEach(tickets => {
+            if(ticket.status==="OPEN"){
+                data.pending += 1;
+            }
+            else if(ticket.status==="INPROGRESS"){
+                data.progress += 1;
+            }
+            else if (ticket.status==="BLOCKED"){
+                data.blocked +=1;
+            }
+            else {
+                data.closed += 1
+            }
+            
+        });
 
     }
 
@@ -45,11 +74,11 @@ function Admin(){
                                         <hr/>
                                         <div className="row">
                                             <div className="col">
-                                                <h1 className="text-dark mx-4">8</h1>
+                                                <h1 className="text-dark mx-4">{ticketStatusCount.pending}</h1>
                                             </div>
                                             <div className="col">
                                                 <div style={{width:50, height:50}}>
-                                                    <CircularProgressbar value={80} styles={buildStyles({pathColor:"red"})}/>
+                                                    <CircularProgressbar value={ticketStatusCount.pending} styles={buildStyles({pathColor:"red"})}/>
                                                 </div>
                                             </div>
                                         </div>
@@ -66,11 +95,11 @@ function Admin(){
                                         <hr/>
                                         <div className="row">
                                             <div className="col">
-                                                <h1 className="text-dark mx-4">4</h1>
+                                                <h1 className="text-dark mx-4">{ticketStatusCount.progress}</h1>
                                             </div>
                                             <div className="col">
                                                 <div style={{width:50, height:50}}>
-                                                    <CircularProgressbar value={40} styles={buildStyles({pathColor:"#AA6C39"})}/>
+                                                    <CircularProgressbar value={ticketStatusCount.progress} styles={buildStyles({pathColor:"#AA6C39"})}/>
                                                 </div>
                                             </div>
                                         </div>
@@ -87,11 +116,11 @@ function Admin(){
                                         <hr/>
                                         <div className="row">
                                             <div className="col">
-                                                <h1 className="text-dark mx-4">7</h1>
+                                                <h1 className="text-dark mx-4">{ticketStatusCount.closed}</h1>
                                             </div>
                                             <div className="col">
                                                 <div style={{width:50, height:50}}>
-                                                    <CircularProgressbar value={70} styles={buildStyles({pathColor:"green"})}/>
+                                                    <CircularProgressbar value={ticketStatusCount.closed} styles={buildStyles({pathColor:"green"})}/>
                                                 </div>
                                             </div>
                                         </div>
@@ -108,11 +137,11 @@ function Admin(){
                                         <hr/>
                                         <div className="row">
                                             <div className="col">
-                                                <h1 className="text-dark mx-4">4</h1>
+                                                <h1 className="text-dark mx-4">{ticketStatusCount.blocked}</h1>
                                             </div>
                                             <div className="col">
                                                 <div style={{width:50, height:50}}>
-                                                    <CircularProgressbar value={40} styles={buildStyles({pathColor:"black"})}/>
+                                                    <CircularProgressbar value={ticketStatusCount.blocked} styles={buildStyles({pathColor:"black"})}/>
                                                 </div>
                                             </div>
                                         </div>
