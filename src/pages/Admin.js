@@ -2,15 +2,19 @@ import { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import { getAllTickets } from "../api/tickets";
+import MaterialTable from "material-table";
+import { getAllUsers } from "../api/user";
 
 function Admin(){
     const Username = localStorage.getItem("name")
 
     const [ticketDetails, setTicketDetails] = useState([])
     const [ticketStatusCount, setTicketStatusCount] = useState({})
+    const [userDetails, setUserDetails] = useState([])
 
     useEffect(()=> {
         fetchTickets()
+        fetchUsers()
     },[])
 
     const fetchTickets = ()=> {
@@ -19,6 +23,18 @@ function Admin(){
             // console.log(res.data)
             setTicketDetails(res.data)
             updateTicketCount(res.data)
+        })
+        .catch(err=>{
+            console.log(err)
+        })
+
+    }
+
+    const fetchUsers = ()=> {
+        getAllUsers()
+        .then(res=>{
+            // console.log(res.data)
+            setUserDetails(res.data)
         })
         .catch(err=>{
             console.log(err)
@@ -35,7 +51,7 @@ function Admin(){
             blocled:0
         }
 
-        tickets.forEach(tickets => {
+        tickets.forEach(ticket => {
             if(ticket.status==="OPEN"){
                 data.pending += 1;
             }
@@ -58,7 +74,7 @@ function Admin(){
             <div className="col-1">
                 <Sidebar/>
             </div>
-            <div className="col vh-100">
+            <div className="col ">
                 <div className="container">
                     <div>
                         <h3 className="text-primary text-center">Welcome, {Username}</h3>
@@ -148,6 +164,57 @@ function Admin(){
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        
+                        <div style={{ maxWidth: '100%' }}>
+
+                                <MaterialTable
+                                columns={[
+                                    { title: 'USER ID', field: 'userId' },
+                                    { title: 'NAME', field: 'name' },
+                                    { title: 'EMAIL', field: 'email' },
+                                    { title: 'ROLE', field: 'userTypes' },
+                                    { title: 'STATUS', field: 'userStatus' }
+                                ]}
+                                title="USER RECORDS"
+
+                                // to print all the user details
+                                data={userDetails}
+
+                                options = {{
+                                    // filtering:true,
+                                    sorting:true,
+                                    rowStyle: {
+                                        // backgroundColor:"red"
+                                    }
+                                }}
+                                />
+                        </div>
+
+                        <hr/>
+
+                        <div style={{ maxWidth: '100%' }}>
+
+                                <MaterialTable
+                                columns={[
+                                    { title: 'TICKET ID', field: '_id' },
+                                    { title: 'TITLE', field: 'title' },
+                                    { title: 'DESCRIPTION', field: 'description' },
+                                    { title: 'REQUESTOR', field: 'requestor' },
+                                    { title: 'ASSIGNEE', field: 'assignee' },
+                                    { title: 'STATUS', field: 'status' }
+                                ]}
+                                title="TICKET RECORDS"
+                                data={ticketDetails}
+
+                                options = {{
+                                    // filtering:true,
+                                    sorting:true,
+                                    rowStyle: {
+                                        // backgroundColor:"red"
+                                    }
+                                }}
+                                />
                         </div>
                     </div>
                 </div>

@@ -1,4 +1,5 @@
-import {CSidebar,CSidebarNav,CNavTitle,CNavItem,CSidebarToggler,CIcon,CBadge,CSidebarBrand,cilSpeedometer,CNavGroup,cilPuzzle} from "@coreui/coreui";
+import {CSidebarToggler,CIcon,CBadge,CSidebarBrand,cilSpeedometer,CNavGroup,cilPuzzle} from "@coreui/coreui";
+import {CSidebar,CSidebarNav,CNavTitle,CNavItem} from '@coreui/react'
 import { Link } from "react-router-dom";
 // import { logout } from "../handlers/logoutHandler";
 // import { useContext } from "react";
