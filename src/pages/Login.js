@@ -90,7 +90,7 @@ function Login(){
             window.location.href="/"
         })
         .catch((err)=>{
-            if(err.response.status){
+            if(err.response.status===400){
                 setError(true)
                 setMessage(err.response.data.message)
             }
@@ -129,12 +129,12 @@ function Login(){
 
             }
         })
-        .catch((err)=>{
-            if(err.response.status){
-                setError(true)
-                setMessage(err.response.data.message)
-            }
-        })
+        // .catch((err)=>{
+        //     if(err.response.status){
+        //         setError(true)
+        //         setMessage(err.response.data.message)
+        //     }
+        // })
 
     }
 

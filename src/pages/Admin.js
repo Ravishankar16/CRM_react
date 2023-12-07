@@ -4,12 +4,15 @@ import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import { getAllTickets } from "../api/tickets";
 import MaterialTable from "material-table";
 import { getAllUsers } from "../api/user";
+import { Modal, Button } from "react-bootstrap";
 
 function Admin(){
     const Username = localStorage.getItem("name")
 
     const [ticketDetails, setTicketDetails] = useState([])
     const [ticketStatusCount, setTicketStatusCount] = useState({})
+    const [selectedCurrTicket, setSelectedCurrTicket] = useState({});
+    const [ticketUpdateModal, setTicketUpdateModal] = useState(false)
     const [userDetails, setUserDetails] = useState([])
 
     useEffect(()=> {
@@ -67,6 +70,17 @@ function Admin(){
             
         });
 
+        setTicketStatusCount({...data})
+
+    }
+
+    const editTicket=(ticketDetail)=>{
+        setTicketUpdateModal(true)
+        setSelectedCurrTicket(ticketDetail)
+    }
+
+    const closeticketUpdateModal = ()=> {
+        setTicketUpdateModal(false)
     }
 
     return(
@@ -196,6 +210,9 @@ function Admin(){
                         <div style={{ maxWidth: '100%' }}>
 
                                 <MaterialTable
+                                // built in functionality onRowClick
+                                onRowClick={(event,rowData)=>editTicket(rowData)}
+
                                 columns={[
                                     { title: 'TICKET ID', field: '_id' },
                                     { title: 'TITLE', field: 'title' },
@@ -212,9 +229,35 @@ function Admin(){
                                     sorting:true,
                                     rowStyle: {
                                         // backgroundColor:"red"
+                                        cursor:"pointer"
                                     }
                                 }}
                                 />
+                                 <Modal show={ticketUpdateModal} onHide={closeticketUpdateModal}>
+                                    <Modal.Header closeButton>
+                                    <Modal.Title>Edit Details</Modal.Title>
+                                    </Modal.Header>
+
+                                    <Modal.Body>
+
+                                        <form>
+
+                                            <div className="p-1">
+                                                <h5> TicketId : {selectedCurrTicket._id} </h5>
+                                            </div>
+
+                                        </form>
+
+                                    </Modal.Body>
+                                    <Modal.Footer>
+                                    <Button variant="secondary" onClick={closeticketUpdateModal}>
+                                        Close
+                                    </Button>
+                                    <Button variant="primary" onClick={()=>{}}>
+                                        Update
+                                    </Button>
+                                    </Modal.Footer>
+                                </Modal>
                         </div>
                     </div>
                 </div>
