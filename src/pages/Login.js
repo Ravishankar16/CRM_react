@@ -106,7 +106,12 @@ function Login(){
         // API call
         userSignIn(data)
         .then(res=>{
-            console.log(res)
+            // console.log(res)
+            if(res.data.message){
+                setError(true)
+                setMessage(res.data.message)
+                return
+            }
             setError(false)
             setMessage("Login Successful!")
             
@@ -129,12 +134,12 @@ function Login(){
 
             }
         })
-        // .catch((err)=>{
-        //     if(err.response.status){
-        //         setError(true)
-        //         setMessage(err.response.data.message)
-        //     }
-        // })
+        .catch((err)=>{
+            if(err.response.status){
+                setError(true)
+                setMessage(err.response.data.message)
+            }
+        })
 
     }
 
@@ -163,7 +168,7 @@ function Login(){
 
     return(
         <div className="bg-info d-flex justify-content-center align-items-center vh-100">
-            <div style={{width:30 + 'rem'}} className="card p-3 rounded-5 shadow-lg">
+            <div style={{width:30 + 'rem'}} className="card p-3 rounded-5 shadow-lg text-center">
                 <h4 className="text-info">{showSignUp?"Sign Up":"Log In"}</h4>
 
                 <form onSubmit={showSignUp?onSignUp:onLogIn}>
